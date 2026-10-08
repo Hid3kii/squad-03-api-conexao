@@ -25,3 +25,12 @@ Separação em controllers, services, repositories, modelos de domínio/DTOs e c
 ## Documentação
 
 README e OpenAPI são pontos de partida. Completar em exercício: descrição dos endpoints, parâmetros e validações, exemplos de requisição/resposta, códigos de erro e origem dos campos. Referência à licença MIT da API de origem preservada neste projeto.
+## Executar
+
+### Requisitos
+- Java 17
+- Maven 3.9 ou superior
+
+### Executar os testes
+```bash
+mvn test
