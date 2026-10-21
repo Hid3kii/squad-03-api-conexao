@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ApiDtos.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Connectivity Forecast API</a> &gt; <a href="index.source.html" class="el_package">com.brazcubas.apsii.model</a> &gt; <span class="el_source">ApiDtos.java</span></div><h1>ApiDtos.java</h1><pre class="source lang-java linenums"><span class="pc" id="L1">package com.brazcubas.apsii.model;</span>
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.brazcubas.apsii.config.ActivityRules;
+import com.brazcubas.apsii.config.QualityRules.Quality;
+
+import java.time.Instant;
+import java.util.List;
+
+public final class ApiDtos {
+    private ApiDtos() {}
+
+    public record HealthResponse(String status, String service) {}
+
+    public record ErrorResponse(ErrorBody error) {}
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public record ErrorBody(String code, String message, List&lt;ErrorDetail&gt; details) {}
+
+    public record ErrorDetail(String field, String message) {}
+
+    public record GeoPoint(double latitude, double longitude) {}
+
+    public record LocationItem(
+            int probeId,
+            String countryCode,
+            Integer asnV4,
+            Integer asnV6,
+            GeoPoint location) {}
+
+    public record LocationsResponse(List&lt;LocationItem&gt; items, int total) {}
+
+    public record ModelListItem(
+            String id,
+            String name,
+            String description,
+            String groupName,
+            String algorithm,
+            String version) {}
+
+    public record ModelsResponse(List&lt;ModelListItem&gt; items, int total) {}
+
+    public record ModelDetail(
+            String id,
+            String name,
+            String description,
+            String groupName,
+            String algorithm,
+            String version,
+            boolean active) {}
+
+    public record ModelReference(String id, String name, String version) {}
+
+    public record LocationWithCountry(double latitude, double longitude, String countryCode) {}
+
+    public record PredictionDetail(
+            Instant predictionFor,
+            double predictedAvgRttMs,
+            double predictedPacketLossPct,
+            Double modelConfidence) {}
+
+    public record PredictionSummary(
+            Instant predictionFor,
+            double predictedAvgRttMs,
+            double predictedPacketLossPct) {}
+
+    public record TimelineItem(
+            Instant predictionFor,
+            double predictedAvgRttMs,
+            double predictedPacketLossPct,
+            Quality quality,
+            int qualityScore) {}
+
+    public record Assessment(Quality quality, int qualityScore) {}
+
+    public record Recommendation(ActivityRules.Recommendation code, String message) {}
+
+    public record ProbeForecastResponse(
+            ModelReference model,
+            int probeId,
+            LocationWithCountry location,
+            PredictionDetail prediction,
+            Assessment assessment,
+            Recommendation recommendation) {}
+
+    public record TimelineResponse(ModelReference model, int probeId, List&lt;TimelineItem&gt; items) {}
+
+    public record RequestedLocation(double latitude, double longitude) {}
+
+    public record MatchedProbe(int probeId, double distanceKm) {}
+
+    public record NearbyMetadata(String disclaimer, String locationPrivacy) {}
+
+    public record NearbyForecastResponse(
+            ModelReference model,
+            RequestedLocation requestedLocation,
+            MatchedProbe matchedProbe,
+            PredictionSummary prediction,
+            Assessment assessment,
+            Recommendation recommendation,
+            NearbyMetadata metadata) {}
+
+    public record ActivityForecast(
+            Quality quality,
+            double predictedAvgRttMs,
+            double predictedPacketLossPct) {}
+
+    public record CompareModelItem(
+            String modelId,
+            String modelName,
+            double predictedAvgRttMs,
+            double predictedPacketLossPct,
+            Quality quality) {}
+
+    public record CompareResponse(int probeId, Instant predictionFor, List&lt;CompareModelItem&gt; models) {}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
