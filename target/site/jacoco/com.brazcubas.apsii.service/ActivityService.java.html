@@ -21,11 +21,11 @@ public class ActivityService {
     private final QualityClassifier classifier;
     private final RecommendationService recommendationService;
 
-    public ActivityService(
+<span class="fc" id="L24">    public ActivityService(</span>
             LocationService locationService,
             ForecastService forecastService,
             QualityClassifier classifier,
-<span class="fc" id="L28">            RecommendationService recommendationService) {</span>
+            RecommendationService recommendationService) {
 <span class="fc" id="L29">        this.locationService = locationService;</span>
 <span class="fc" id="L30">        this.forecastService = forecastService;</span>
 <span class="fc" id="L31">        this.classifier = classifier;</span>
@@ -42,7 +42,7 @@ public class ActivityService {
 <span class="nc" id="L42">                    model.id(), nearest.probe().probeId(), DateTimeUtils.parseUtc(request.dateTime()));</span>
 <span class="nc" id="L43">        } catch (DateTimeException exception) {</span>
 <span class="nc" id="L44">            throw ApiException.validation(&quot;dateTime&quot;, &quot;must be an ISO-8601 timestamp&quot;);</span>
-<span class="nc" id="L45">        }</span>
+        }
 <span class="nc" id="L46">        QualityClassifier.QualityAssessment assessment = classifier.assess(</span>
 <span class="nc" id="L47">                forecast.predictedAvgRttMs(), forecast.predictedPacketLossPct());</span>
 <span class="nc" id="L48">        RecommendationService.ActivityRecommendation recommendation = recommendationService.forActivity(</span>
@@ -51,7 +51,7 @@ public class ActivityService {
 <span class="nc" id="L51">                new ApiDtos.ModelReference(model.id(), model.name(), model.version()),</span>
 <span class="nc" id="L52">                request.activity(),</span>
 <span class="nc" id="L53">                recommendation.suitable(),</span>
-                new ApiDtos.ActivityForecast(
+<span class="nc" id="L54">                new ApiDtos.ActivityForecast(</span>
 <span class="nc" id="L55">                        assessment.quality(), forecast.predictedAvgRttMs(), forecast.predictedPacketLossPct()),</span>
 <span class="nc" id="L56">                recommendation.recommendation(),</span>
 <span class="nc" id="L57">                forecastService.referenceMetadata());</span>

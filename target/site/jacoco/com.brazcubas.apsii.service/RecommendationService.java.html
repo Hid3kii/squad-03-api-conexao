@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RecommendationService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Connectivity Forecast API</a> &gt; <a href="index.source.html" class="el_package">com.brazcubas.apsii.service</a> &gt; <span class="el_source">RecommendationService.java</span></div><h1>RecommendationService.java</h1><pre class="source lang-java linenums">package com.brazcubas.apsii.service;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RecommendationService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Connectivity Forecast API</a> &gt; <a href="index.source.html" class="el_package">com.brazcubas.apsii.service</a> &gt; <span class="el_source">RecommendationService.java</span></div><h1>RecommendationService.java</h1><pre class="source lang-java linenums"><span class="nc" id="L1">package com.brazcubas.apsii.service;</span>
 
 import com.brazcubas.apsii.config.ActivityRules;
 import com.brazcubas.apsii.config.ActivityRules.Activity;
@@ -27,20 +27,20 @@ import org.springframework.stereotype.Service;
     public ApiDtos.Recommendation forQuality(Quality quality) {
 <span class="nc bnc" id="L28" title="All 3 branches missed.">        return switch (quality) {</span>
 <span class="nc" id="L29">            case GOOD -&gt; new ApiDtos.Recommendation(</span>
-                    Recommendation.NORMAL_USE,
-                    &quot;A conexão prevista está adequada para atividades online neste período.&quot;);
+<span class="nc" id="L30">                    Recommendation.NORMAL_USE,</span>
+<span class="nc" id="L31">                    &quot;A conexão prevista está adequada para atividades online neste período.&quot;);</span>
 <span class="nc" id="L32">            case MODERATE -&gt; new ApiDtos.Recommendation(</span>
-                    Recommendation.REDUCE_NETWORK_USAGE,
-                    &quot;A conexão pode apresentar alguma instabilidade neste período.&quot;);
+<span class="nc" id="L33">                    Recommendation.REDUCE_NETWORK_USAGE,</span>
+<span class="nc" id="L34">                    &quot;A conexão pode apresentar alguma instabilidade neste período.&quot;);</span>
 <span class="nc" id="L35">            case UNSTABLE -&gt; new ApiDtos.Recommendation(</span>
-                    Recommendation.PREPARE_OFFLINE,
-                    &quot;Considere preparar recursos offline para este período.&quot;);
+<span class="nc" id="L36">                    Recommendation.PREPARE_OFFLINE,</span>
+<span class="nc" id="L37">                    &quot;Considere preparar recursos offline para este período.&quot;);</span>
         };
     }
 
     public ActivityRecommendation forActivity(Activity activity, Quality quality) {
-<span class="nc" id="L42">        boolean suitable = ActivityRules.qualityRank(quality)</span>
-<span class="nc bnc" id="L43" title="All 2 branches missed.">                &gt;= ActivityRules.qualityRank(ActivityRules.minimumQuality(activity));</span>
+<span class="nc bnc" id="L42" title="All 2 branches missed.">        boolean suitable = ActivityRules.qualityRank(quality)</span>
+<span class="nc" id="L43">                &gt;= ActivityRules.qualityRank(ActivityRules.minimumQuality(activity));</span>
 <span class="nc bnc" id="L44" title="All 4 branches missed.">        Recommendation code = suitable &amp;&amp; quality == Quality.GOOD</span>
 <span class="nc" id="L45">                ? Recommendation.NORMAL_USE</span>
 <span class="nc bnc" id="L46" title="All 2 branches missed.">                : quality == Quality.UNSTABLE</span>
@@ -84,6 +84,6 @@ import org.springframework.stereotype.Service;
         };
     }
 
-<span class="nc" id="L87">    public record ActivityRecommendation(boolean suitable, ApiDtos.Recommendation recommendation) {}</span>
+    public record ActivityRecommendation(boolean suitable, ApiDtos.Recommendation recommendation) {}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -26,10 +26,10 @@ public class ForecastController {
     private final int timelineDefaultLimit;
     private final int timelineMaxLimit;
 
-    public ForecastController(
+<span class="fc" id="L29">    public ForecastController(</span>
             ForecastService forecastService,
             @Value(&quot;${api.timeline-default-limit:24}&quot;) int timelineDefaultLimit,
-<span class="fc" id="L32">            @Value(&quot;${api.timeline-max-limit:100}&quot;) int timelineMaxLimit) {</span>
+            @Value(&quot;${api.timeline-max-limit:100}&quot;) int timelineMaxLimit) {
 <span class="fc" id="L33">        this.forecastService = forecastService;</span>
 <span class="pc bpc" id="L34" title="2 of 4 branches missed.">        if (timelineDefaultLimit &lt; 1 || timelineDefaultLimit &gt; timelineMaxLimit) {</span>
 <span class="nc" id="L35">            throw new IllegalArgumentException(&quot;Timeline limits must satisfy 1 &lt;= default &lt;= maximum&quot;);</span>

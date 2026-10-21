@@ -36,12 +36,12 @@ public class ForecastService {
     private final QualityClassifier classifier;
     private final RecommendationService recommendations;
 
-    public ForecastService(
+<span class="fc" id="L39">    public ForecastService(</span>
             ForecastRepository repository,
             LocationService locationService,
             ModelService modelService,
             QualityClassifier classifier,
-<span class="fc" id="L44">            RecommendationService recommendations) {</span>
+            RecommendationService recommendations) {
 <span class="fc" id="L45">        this.repository = repository;</span>
 <span class="fc" id="L46">        this.locationService = locationService;</span>
 <span class="fc" id="L47">        this.modelService = modelService;</span>
@@ -55,9 +55,9 @@ public class ForecastService {
 <span class="nc" id="L55">        QualityClassifier.QualityAssessment assessment = assess(forecast);</span>
 <span class="nc" id="L56">        return new ApiDtos.ProbeForecastResponse(</span>
 <span class="nc" id="L57">                modelReference(model),</span>
-                probeId,
+<span class="nc" id="L58">                probeId,</span>
 <span class="nc" id="L59">                new ApiDtos.LocationWithCountry(forecast.latitude(), forecast.longitude(), forecast.countryCode()),</span>
-                new ApiDtos.PredictionDetail(
+<span class="nc" id="L60">                new ApiDtos.PredictionDetail(</span>
 <span class="nc" id="L61">                        forecast.predictionFor(), forecast.predictedAvgRttMs(),</span>
 <span class="nc" id="L62">                        forecast.predictedPacketLossPct(), forecast.modelConfidence()),</span>
 <span class="nc" id="L63">                new ApiDtos.Assessment(assessment.quality(), assessment.qualityScore()),</span>
@@ -71,9 +71,9 @@ public class ForecastService {
 <span class="fc" id="L71">        Instant toTime = parseOptionalTime(to, &quot;to&quot;);</span>
 <span class="pc bpc" id="L72" title="5 of 6 branches missed.">        if (fromTime != null &amp;&amp; toTime != null &amp;&amp; fromTime.isAfter(toTime)) {</span>
 <span class="nc" id="L73">            throw new ApiException(</span>
-                    400,
-                    &quot;INVALID_TIME_RANGE&quot;,
-                    &quot;The 'from' timestamp must be earlier than or equal to the 'to' timestamp.&quot;);
+<span class="nc" id="L74">                    400,</span>
+<span class="nc" id="L75">                    &quot;INVALID_TIME_RANGE&quot;,</span>
+<span class="nc" id="L76">                    &quot;The 'from' timestamp must be earlier than or equal to the 'to' timestamp.&quot;);</span>
         }
 <span class="fc" id="L78">        List&lt;Forecast&gt; records = requireProbeRecords(model.id(), probeId).stream()</span>
 <span class="pc bpc" id="L79" title="3 of 4 branches missed.">                .filter(record -&gt; fromTime == null || !record.predictionFor().isBefore(fromTime))</span>
@@ -99,9 +99,9 @@ public class ForecastService {
 <span class="nc" id="L99">        QualityClassifier.QualityAssessment assessment = assess(forecast);</span>
 <span class="nc" id="L100">        return new ApiDtos.NearbyForecastResponse(</span>
 <span class="nc" id="L101">                modelReference(model),</span>
-                new ApiDtos.RequestedLocation(latitude, longitude),
+<span class="nc" id="L102">                new ApiDtos.RequestedLocation(latitude, longitude),</span>
 <span class="nc" id="L103">                new ApiDtos.MatchedProbe(nearest.probe().probeId(), nearest.distanceKm()),</span>
-                new ApiDtos.PredictionSummary(
+<span class="nc" id="L104">                new ApiDtos.PredictionSummary(</span>
 <span class="nc" id="L105">                        forecast.predictionFor(), forecast.predictedAvgRttMs(), forecast.predictedPacketLossPct()),</span>
 <span class="nc" id="L106">                new ApiDtos.Assessment(assessment.quality(), assessment.qualityScore()),</span>
 <span class="nc" id="L107">                recommendations.forQuality(assessment.quality()),</span>
@@ -116,7 +116,7 @@ public class ForecastService {
 <span class="nc bnc" id="L116" title="All 2 branches missed.">            if (!records.isEmpty()) {</span>
 <span class="nc" id="L117">                timelines.put(model.id(), records);</span>
             }
-<span class="nc" id="L119">        }</span>
+        }
 <span class="nc bnc" id="L120" title="All 2 branches missed.">        if (timelines.isEmpty()) {</span>
 <span class="nc" id="L121">            throw probeNotFound();</span>
         }
@@ -126,7 +126,7 @@ public class ForecastService {
 <span class="nc bnc" id="L126" title="All 2 branches missed.">        for (List&lt;Forecast&gt; timeline : timelines.values().stream().skip(1).toList()) {</span>
 <span class="nc" id="L127">            Set&lt;Instant&gt; times = timeline.stream().map(Forecast::predictionFor).collect(Collectors.toSet());</span>
 <span class="nc" id="L128">            commonTimes.retainAll(times);</span>
-<span class="nc" id="L129">        }</span>
+        }
 <span class="nc bnc" id="L130" title="All 2 branches missed.">        if (commonTimes.isEmpty()) {</span>
 <span class="nc" id="L131">            throw noCommonPrediction();</span>
         }
@@ -137,7 +137,7 @@ public class ForecastService {
 <span class="nc" id="L137">                throw noCommonPrediction();</span>
             }
 <span class="nc" id="L139">            chosen = target;</span>
-        } else {
+<span class="nc" id="L140">        } else {</span>
 <span class="nc" id="L141">            chosen = selectCurrentTime(commonTimes);</span>
         }
 <span class="nc" id="L143">        Map&lt;String, PredictionModel&gt; catalog = new HashMap&lt;&gt;();</span>
@@ -222,9 +222,9 @@ public class ForecastService {
 
     private static ApiException noCommonPrediction() {
 <span class="nc" id="L224">        return new ApiException(</span>
-                404,
-                &quot;NO_COMMON_PREDICTION&quot;,
-                &quot;No shared prediction instant was found across active models for this probe.&quot;);
+<span class="nc" id="L225">                404,</span>
+<span class="nc" id="L226">                &quot;NO_COMMON_PREDICTION&quot;,</span>
+<span class="nc" id="L227">                &quot;No shared prediction instant was found across active models for this probe.&quot;);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

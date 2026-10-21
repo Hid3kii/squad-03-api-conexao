@@ -1,6 +1,0 @@
-prediction_id,model_id,model_version,probe_id,measurement_id,country_code,asn_v4,asn_v6,latitude,longitude,prediction_generated_at,prediction_for,predicted_avg_rtt_ms,predicted_packet_loss_pct,model_confidence
-1,model-a,1.0,100,1000,BR,1234,, -23.5,-46.6,2026-10-17T10:00:00Z,2026-10-17T11:00:00Z,10.5,0.0,0.5
-2,model-a,1.0,100,1001,BR,1234,, -23.5,-46.6,2026-10-17T10:00:00Z,2026-10-17T11:00:00Z,10.5,0.0,
-3,model-a,1.0,100,1002,BR,1234,, -23.5,-46.6,2026-10-17T10:00:00Z,2026-10-17T11:00:00Z,10.5,0.0,-0.1
-4,model-a,1.0,100,1003,BR,1234,, -23.5,-46.6,2026-10-17T10:00:00Z,2026-10-17T11:00:00Z,10.5,0.0,1.5
-5,model-a,1.0,100,1004,BR,1234,, -23.5,-46.6,2026-10-17T10:00:00Z,2026-10-17T11:00:00Z,10.5,0.0,abc

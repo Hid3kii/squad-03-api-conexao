@@ -1,12 +1,13 @@
 package com.brazcubas.apsii.repository;
 
-import java.time.Instant;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import org.springframework.core.io.DefaultResourceLoader;
 
 import com.brazcubas.apsii.model.Forecast;
@@ -18,44 +19,54 @@ class CsvForecastRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        // Objeto real para o Record (sem uso de Mockito para classe final)
-        PredictionModel validModel = new PredictionModel(
-                "model-a",
-                "Modelo Teste",
-                "Descrição",
-                "Grupo A",
-                "RandomForest",
-                "1.0",
-                true,
-                Instant.now()
-        );
+        // 1. Dublê de ModelRepository com Mockito devolvendo model-a e model-b
+        ModelRepository modelRepository = mock(ModelRepository.class);
 
-        // Dublê (Stub) manual de ModelRepository conforme pedido no exercício
-        ModelRepository modelRepository = new ModelRepository() {
-            @Override
-            public List<PredictionModel> findAll() {
-                return List.of(validModel);
-            }
+        PredictionModel modelA = new PredictionModel(
+                "model-a", "Modelo A", "Descrição A", "Grupo", "Teste", "1.0", true, null);
+        PredictionModel modelB = new PredictionModel(
+                "model-b", "Modelo B", "Descrição B", "Grupo", "Teste", "1.0", true, null);
 
-            @Override
-            public Optional<PredictionModel> findById(String modelId) {
-                return "model-a".equals(modelId) ? Optional.of(validModel) : Optional.empty();
-            }
-        };
+        when(modelRepository.findAll()).thenReturn(List.of(modelA, modelB));
 
-        // Instancia o repositório apontando para o CSV da fixture
+        // 2. Criação do repositório apontando para o caminho exigido
         repository = new CsvForecastRepository(
                 new DefaultResourceLoader(),
                 modelRepository,
-                "classpath:predictions-test.csv"
+                "classpath:data-test/predictions-11-2.csv"
         );
+
+        // 3. Chamada de load()
         repository.load();
     }
 
     @Test
-    void deveCarregarApenasLinhasValidasEDescartarAsInvalidas() {
-        List<Forecast> forecasts = repository.findAll();
-        // O CSV de teste possui 5 linhas: 2 válidas (confidence = 0.5 e vazia) e 3 inválidas (-0.1, 1.5 e texto)
-        assertEquals(2, forecasts.size(), "Deve carregar apenas as 2 linhas válidas e descartar as 3 inválidas");
+    void deveProtegerCampoOpcionalDeConfiancaEFiltrarLinhasInvalidas() {
+        // Asserts sobre findAll():
+        // O CSV tem 9 linhas:
+        // - 4 válidas do model-a (mock-a-1 a mock-a-4)
+        // - 3 inválidas descartadas do model-a (1.5, abc, -0.1)
+        // - 1 válida do model-b (mock-b-1)
+        // - 1 descartada por modelo não cadastrado (model-zz)
+        // Total esperado no repositório = 5
+        List<Forecast> todos = repository.findAll();
+        assertEquals(5, todos.size(), "Deve conter apenas as 5 linhas válidas no repositório");
+
+        // Asserts sobre findByModelAndProbe("model-a", 900001)
+        List<Forecast> timeline = repository.findByModelAndProbe("model-a", 900001);
+        assertEquals(4, timeline.size(), "A timeline deve conter apenas os 4 registros válidos do model-a");
+
+        // Cubram as decisões do campo:
+        // mock-a-1: valor 0.82
+        assertEquals(0.82, timeline.get(0).modelConfidence(), 0.0001);
+
+        // mock-a-2: em branco carrega null
+        assertNull(timeline.get(1).modelConfidence(), "Confiança em branco deve ser carregada como null");
+
+        // mock-a-3: borda 0 aceita
+        assertEquals(0.0, timeline.get(2).modelConfidence(), 0.0001);
+
+        // mock-a-4: borda 1 aceita
+        assertEquals(1.0, timeline.get(3).modelConfidence(), 0.0001);
     }
 }
